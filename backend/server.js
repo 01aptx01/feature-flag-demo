@@ -1,33 +1,30 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
+const LD = require("launchdarkly-node-server-sdk");
 
 const app = express();
-
 app.use(cors());
-app.use(express.json());
 
-const FILE = "./featureFlags.json";
+const sdkKey = process.env.LD_SDK_KEY;
 
-function readFlags() {
-  return JSON.parse(fs.readFileSync(FILE));
-}
+const client = LD.init(sdkKey);
 
-function writeFlags(data) {
-  fs.writeFileSync(FILE, JSON.stringify(data, null, 2));
-}
-
-app.get("/flags", (req, res) => {
-  res.json(readFlags());
+client.waitForInitialization().then(() => {
+  console.log("LaunchDarkly ready");
 });
 
-app.post("/flags", (req, res) => {
-  const flags = readFlags();
-  const updated = { ...flags, ...req.body };
-  writeFlags(updated);
-  res.json(updated);
+app.get("/flags", async (req, res) => {
+  const user = {
+    key: "demo-user",
+  };
+
+  const flag = await client.variation("enable_new_ui", user, false);
+
+  res.json({
+    enable_new_ui: flag,
+  });
 });
 
 app.listen(4000, () => {
-  console.log("Backend running on 4000");
+  console.log("Backend running");
 });

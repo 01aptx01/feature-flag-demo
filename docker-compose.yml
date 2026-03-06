@@ -1,11 +1,12 @@
 version: "3"
 
 services:
-
   backend:
     build: ./backend
     ports:
       - "4000:4000"
+    environment:
+      LD_SDK_KEY: ${LD_SDK_KEY}
 
   frontend:
     build: ./frontend

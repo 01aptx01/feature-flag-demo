@@ -51,6 +51,48 @@
   animation: pulse 2s infinite;
 }
 
+/* Promo Banner สวยๆ พร้อม Animation */
+.promo-banner {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
+  animation: slideDown 0.4s ease-out;
+  z-index: 100;
+}
+
+/* Dark Mode Theme */
+.dark-theme {
+  background: #0f172a !important; /* สีกรมท่าเข้มแบบ Modern */
+}
+
+.dark-theme .title {
+  color: #f8fafc;
+}
+
+.dark-theme .card-old {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* ปรับปุ่มให้วิบวับขึ้น */
+.btn-glow {
+  background: #ffffff;
+  color: #764ba2;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }

@@ -14,14 +14,16 @@ client.waitForInitialization().then(() => {
 });
 
 app.get("/flags", async (req, res) => {
-  const user = {
-    key: "demo-user",
-  };
+  const user = { key: "demo-user" };
 
-  const flag = await client.variation("enable_new_ui", user, false);
+  const showNewUI = await client.variation("enable_new_ui", user, false);
+  const showBanner = await client.variation("show_promo_banner", user, false);
+  const enableDark = await client.variation("enable_dark_mode", user, false);
 
   res.json({
-    enable_new_ui: flag,
+    enable_new_ui: showNewUI,
+    show_promo_banner: showBanner,
+    enable_dark_mode: enableDark,
   });
 });
 

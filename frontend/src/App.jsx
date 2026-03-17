@@ -1,29 +1,41 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [flag, setFlag] = useState(false);
 
   const loadFlag = async () => {
-    const res = await fetch("http://localhost:4000/flags");
-    const data = await res.json();
-    setFlag(data.enable_new_ui);
+    try {
+      const res = await fetch("http://localhost:4000/flags");
+      const data = await res.json();
+      setFlag(data.enable_new_ui);
+    } catch (e) {
+      console.error("Fetch error:", e);
+    }
   };
 
   useEffect(() => {
     loadFlag();
+    const interval = setInterval(loadFlag, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>Feature Flag Demo</h1>
+    <div className="container">
+      <h1 className="title">System Experience</h1>
 
-      {flag ? (
-        <div style={{ background: "lightgreen", padding: 20 }}>
-          🚀 New UI Enabled
+      <div className={`card ${flag ? "card-new" : "card-old"}`}>
+        <div className="icon">{flag ? "🚀" : "🏠"}</div>
+        <div className="content">
+          <h2>{flag ? "Premium Experience" : "Standard View"}</h2>
+          <p>
+            {flag
+              ? "Welcome to the future of UI design."
+              : "Currently viewing the legacy version."}
+          </p>
         </div>
-      ) : (
-        <div style={{ background: "lightgray", padding: 20 }}>Old UI</div>
-      )}
+        {flag && <button className="btn-glow">Explore Now</button>}
+      </div>
     </div>
   );
 }
